@@ -234,5 +234,31 @@ where	task_id in ([join $im_trans_task ","])
 "
 
 
+# ---------------------------------------------------------------
+# Set all related projects to "invoiced" if all of their
+# im_trans_tasks are invoiced.
+# ---------------------------------------------------------------
+
+foreach project_id $select_project {
+
+    # Check if there are remaining trans tasks that still need to be invoiced
+    set remaining_trans_tasks [db_string remaining_trans_tasks "select count(*) from im_trans_tasks where project_id=:project_id and invoice_id is null"]
+
+    if {0 == $remaining_trans_tasks} {
+	# Now we can set the status of the project to "invoiced"
+	db_dml set_project_status_invoiced "
+		update im_projects
+		set project_status_id = [im_project_status_invoiced]
+		where project_id = :project_id
+        "
+	ns_log Notice "intranet-trans-invoices/new-4: set project $project_id to invoiced"
+    }
+}
+
+
+# ---------------------------------------------------------------
+# Proudly redirecting to show the new invoice
+# ---------------------------------------------------------------
+
 db_release_unused_handles
 ad_returnredirect "/intranet-invoices/view?invoice_id=$invoice_id"
