@@ -67,9 +67,11 @@
   <msg key="MSM">MSM</msg>
   <msg key="Name">Name</msg>
   <msg key="New_cost_type">New %cost_type%</msg>
+  <msg key="New_Customer_Invoice_from_Translation_Tasks">New Customer Invoice from Translation Tasks</msg>
   <msg key="New_Invoice">New Invoice</msg>
   <msg key="New_Price">New Price</msg>
   <msg key="New_Purchase_Order">New Purchase Order</msg>
+  <msg key="New_Quote_from_Translation_Tasks">New Quote from Translation Tasks</msg>
   <msg key="New_Trans_Invoice">New Trans Invoice</msg>
   <msg key="New_Translation_Customer_Invoice">New Translation Customer Invoice</msg>
   <msg key="New_Translation_Quote">New Translation Quote</msg>
