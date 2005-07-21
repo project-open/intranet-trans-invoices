@@ -265,8 +265,8 @@ select
         im_category_from_id(p.project_status_id) as project_status,
         im_proj_url_from_type(p.project_id, 'website') as url,
 	p.start_date,
-	p.end_date,
-	to_char(end_date, 'HH24:MI') as end_date_time
+	to_char(p.end_date, 'YYYY-MM-DD') as end_date,
+	to_char(p.end_date, 'HH24:MI') as end_date_time
 from 
 	im_projects p, 
         im_companies c,
