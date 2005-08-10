@@ -253,8 +253,12 @@ create table im_trans_prices (
 				check(valid_through - valid_from >= 0),
 	--
 	-- "Output variables"
-	currency		char(3) references currency_codes(ISO),
+	currency		char(3) references currency_codes(ISO)
+				constraint im_trans_prices_currency_nn
+				not null,
 	price			numeric(12,4)
+				constraint im_trans_prices_price_nn
+				not null
 );
 
 -- make sure the same price doesn't get defined twice 
