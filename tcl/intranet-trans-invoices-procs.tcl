@@ -70,6 +70,10 @@ order by
     set old_currency ""
     db_foreach prices $price_sql {
 
+        # There can be errors when formatting an empty string...
+        set price_formatted ""
+        catch { set price_formatted [format "%0.3f" $price] } errmsg
+
 	if {"" != $old_currency && ![string equal $old_currency $currency]} {
 	    append price_rows_html "<tr><td colspan=$colspan>&nbsp;</td></tr>\n"
 	}
@@ -81,7 +85,7 @@ order by
 	  <td>$source_language</td>
           <td>$target_language</td>
 	  <td>$subject_area</td>
-          <td>[format "%0.3f" $price] $currency</td>
+          <td>$price_formatted $currency</td>
           <td><input type=checkbox name=price_id.$price_id></td>
 	</tr>"
 	incr ctr
