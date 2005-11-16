@@ -16,6 +16,12 @@ ad_page_contract {
 } 
 
 set current_user_id [ad_maybe_redirect_for_registration]
+if {![im_permission $current_user_id add_costs]} {
+    ad_return_complaint 1 "[_ intranet-trans-invoices.lt_You_have_insufficient_1]"
+    return
+}
+
+
 set page_title "Upload New File/URL"
 set context_bar [im_context_bar [list "/intranet/cusomers/" "Clients"] "Upload CSV"]
 

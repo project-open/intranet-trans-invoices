@@ -27,7 +27,7 @@ ad_page_contract {
 # ------------------------------------------------------------------
 
 set user_id [ad_maybe_redirect_for_registration]
-if {![im_permission $user_id view_costs]} {
+if {![im_permission $user_id add_costs]} {
     ad_return_complaint 1 "[_ intranet-trans-invoices.lt_You_have_insufficient_1]"
 }
 

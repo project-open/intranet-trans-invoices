@@ -26,7 +26,8 @@ ad_page_contract {
 
 set user_id [ad_maybe_redirect_for_registration]
 set user_is_admin_p [im_is_user_site_wide_or_intranet_admin $user_id]
-if {!$user_is_admin_p} {
+
+if {![im_permission $user_id add_costs]} {
     ad_return_complaint 1 "[_ intranet-trans-invoices.lt_You_have_insufficient_1]"
     return
 }
