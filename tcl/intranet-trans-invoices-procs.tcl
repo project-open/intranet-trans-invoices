@@ -100,15 +100,27 @@ order by
 
     set sample_pracelist_link "<a href=/intranet-trans-invoices/price-lists/pricelist_sample.csv>[_ intranet-trans-invoices.lt_sample_pricelist_CSV_]</A>"
 
-    append price_list_html "
+    if {[im_permission $user_id add_costs]} {
+
+        append price_list_html "
 <tr>
   <td colspan=$colspan align=right>
     <input type=submit name=add_new value=\"[_ intranet-trans-invoices.Add_New]\">
     <input type=submit name=del value=\"[_ intranet-trans-invoices.Del]\">
   </td>
-</tr>
+</tr>\n"
+
+    }
+
+append price_list_html "
 </table>
 </form>
+"
+
+
+    if {[im_permission $user_id add_costs]} {
+
+        append price_list_html "
 <ul>
   <li>
     <a href=/intranet-trans-invoices/upload-prices?[export_url_vars company_id return_url]>
@@ -118,5 +130,8 @@ order by
     [_ intranet-trans-invoices.lt_Check_this_sample_pra]
     [_ intranet-trans-invoices.lt_It_contains_some_comm]
 </ul>\n"
+
+    }
+
     return $price_list_html
 }
