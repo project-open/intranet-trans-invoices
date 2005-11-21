@@ -90,7 +90,7 @@ ad_form \
 	{source_language_id:text(select),optional {label "[_ intranet-trans-invoices.Source_Language]"} {options $language_options} }
 	{target_language_id:text(select),optional {label "[_ intranet-trans-invoices.Target_Language]"} {options $language_options} }
 	{subject_area_id:text(select),optional {label "[_ intranet-trans-invoices.Subject_Area]"} {options $subject_area_options} }
-	{amount:text(text) {label "[_ intranet-trans-invoices.Amount]"} {html {size 10}}}
+	{amount:float(text) {label "[_ intranet-trans-invoices.Amount]"} {html {size 10}}}
 	{currency:text(select) {label "[_ intranet-trans-invoices.Currency]"} {options $currency_options} }
     }
 
