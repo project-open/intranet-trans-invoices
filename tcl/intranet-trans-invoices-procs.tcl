@@ -79,7 +79,7 @@ order by
 	    append price_rows_html "<tr><td colspan=$colspan>&nbsp;</td></tr>\n"
 	}
 
-        set price_url [export_vars -base $price_url_base { company_id price_id }]
+        set price_url [export_vars -base $price_url_base { company_id price_id return_url }]
 
 	append price_rows_html "
         <tr $bgcolor([expr $ctr % 2]) nobreak>

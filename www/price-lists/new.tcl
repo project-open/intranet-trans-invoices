@@ -104,7 +104,8 @@ ad_form -extend -name price -on_request {
 
 } -select_query {
 
-	select	p.*
+	select	p.*,
+		price as amount
 	from	im_trans_prices p
 	where	p.price_id = :price_id
 
@@ -136,16 +137,17 @@ insert into im_trans_prices (
 } -edit_data {
 
     db_dml price_update "
-	update im_prices set
-	        package_name    = :package_name,
-	        label           = :label,
-	        name            = :name,
-	        url             = :url,
-	        sort_order      = :sort_order,
-	        parent_price_id  = :parent_price_id
-	where
-		price_id = :price_id
-"
+	update im_trans_prices set 
+	uom_id = :uom_id,
+	task_type_id = :task_type_id,
+	target_language_id = :target_language_id,
+	source_language_id = :source_language_id,
+	subject_area_id = :subject_area_id,
+	currency = :currency,
+	price = :amount
+	where price_id = :price_id
+    "
+
 } -on_submit {
 
 	ns_log Notice "new1: on_submit"
