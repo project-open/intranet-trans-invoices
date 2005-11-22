@@ -50,12 +50,14 @@ set uom_options [db_list_of_lists uom_options "
 select category, category_id
 from im_categories
 where category_type = 'Intranet UoM'
+order by category
 "]
 
 set task_type_options [db_list_of_lists uom_options "
 select category, category_id
 from im_categories
 where category_type = 'Intranet Project Type'
+order by category
 "]
 set task_type_options [linsert $task_type_options 0 [list "" ""]]
 
@@ -63,6 +65,7 @@ set language_options [db_list_of_lists uom_options "
 select category, category_id
 from im_categories
 where category_type = 'Intranet Translation Language'
+order by category
 "]
 set language_options [linsert $language_options 0 [list "" ""]]
 
@@ -70,6 +73,7 @@ set subject_area_options [db_list_of_lists uom_options "
 select category, category_id
 from im_categories
 where category_type = 'Intranet Translation Subject Area'
+order by category
 "]
 set subject_area_options [linsert $subject_area_options 0 [list "" ""]]
 

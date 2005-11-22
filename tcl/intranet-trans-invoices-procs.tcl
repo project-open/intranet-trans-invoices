@@ -25,6 +25,7 @@ ad_proc im_trans_price_component { user_id company_id return_url} {
     set bgcolor(0) " class=roweven "
     set bgcolor(1) " class=rowodd "
     set price_format "000.000"
+    set price_url_base "/intranet-trans-invoices/price-lists/new"
 
     set colspan 7
     set price_list_html "
@@ -78,6 +79,8 @@ order by
 	    append price_rows_html "<tr><td colspan=$colspan>&nbsp;</td></tr>\n"
 	}
 
+        set price_url [export_vars -base $price_url_base { company_id price_id }]
+
 	append price_rows_html "
         <tr $bgcolor([expr $ctr % 2]) nobreak>
 	  <td>$uom</td>
@@ -85,7 +88,7 @@ order by
 	  <td>$source_language</td>
           <td>$target_language</td>
 	  <td>$subject_area</td>
-          <td>$price_formatted $currency</td>
+          <td><a href=\"$price_url\">$price_formatted $currency</a></td>
           <td><input type=checkbox name=price_id.$price_id></td>
 	</tr>"
 	incr ctr
