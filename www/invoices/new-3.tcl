@@ -71,9 +71,12 @@ set tasks_where_clause "task_id in ([join $in_clause_list ","])"
 # Calculate the next invoice number by calculating the maximum of
 # the "reasonably build numbers" currently available
 
+set cost_type_id $target_cost_type_id
+set type_name [db_string type_name "select im_category_from_id(:target_cost_type_id)"]
+
 set button_text "[_ intranet-trans-invoices.Create_Invoice]"
 set page_title "[_ intranet-trans-invoices.New_Invoice]"
-set context_bar [im_context_bar [list /intranet/invoices/ "[_ intranet-trans-invoices.Invoices]"] $page_title]
+set context_bar [im_context_bar [list /intranet/invoices/ "[_ intranet-trans-invoices.Finance]"] $page_title]
 set invoice_id [im_new_object_id]
 set invoice_nr [im_next_invoice_nr]
 set invoice_date $todays_date
@@ -81,8 +84,6 @@ set payment_days [ad_parameter -package_id [im_package_cost_id] "DefaultCompanyI
 set due_date [db_string get_due_date "select to_date(to_char(sysdate,'YYYY-MM-DD'),'YYYY-MM-DD') + $payment_days from dual"]
 set provider_id [im_company_internal]
 set customer_id $company_id
-
-set cost_type_id $target_cost_type_id
 
 set cost_status_id [im_cost_status_created]
 set vat 0
