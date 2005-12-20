@@ -45,6 +45,8 @@ set bgcolor(0) " class=roweven"
 set bgcolor(1) " class=rowodd"
 set required_field "<font color=red size=+1><B>*</B></font>"
 
+set price_url_base "/intranet-trans-invoices/price-lists/new"
+
 set number_format "99990.099"
 
 if {![im_permission $user_id add_invoices]} {
@@ -322,6 +324,7 @@ if {![string equal "" $task_table_rows]} {
           <td class=rowtitle>[_ intranet-trans-invoices.Subject_Area]</td>
 <!--          <td class=rowtitle>[_ intranet-trans-invoices.Valid_From]</td>	-->
 <!--          <td class=rowtitle>[_ intranet-trans-invoices.Valid_Through]</td>	-->
+          <td class=rowtitle>[_ intranet-core.Note]</td>
           <td class=rowtitle>[_ intranet-trans-invoices.Price]</td>
         </tr>\n"
 
@@ -398,6 +401,7 @@ order by
     #
     set reference_price_sql "
 select 
+	p.price_id,
 	p.relevancy as price_relevancy,
 	trim(' ' from to_char(p.price,:number_format)) as price,
 	p.company_id as price_company_id,
@@ -408,6 +412,7 @@ select
 	p.subject_area_id as subject_area_id,
 	p.valid_from,
 	p.valid_through,
+	p.price_note,
 	c.company_path as price_company_name,
         im_category_from_id(p.uom_id) as price_uom,
         im_category_from_id(p.task_type_id) as price_task_type,
@@ -424,6 +429,7 @@ from
 				p.target_language_id, :target_language_id,
 				p.source_language_id, :source_language_id
 			) as relevancy,
+			p.price_id,
 			p.price,
 			p.company_id,
 			p.uom_id,
@@ -432,7 +438,8 @@ from
 			p.source_language_id,
 			p.subject_area_id,
 			p.valid_from,
-			p.valid_through
+			p.valid_through,
+			p.note as price_note
 		from im_trans_prices p
 		where
 			uom_id=:task_uom_id
@@ -484,9 +491,13 @@ order by
 	    # Take the first line of the result list (=best score) as a price proposal:
 	    if {$price_list_ctr == 1} {set best_match_price $price}
 
+	    set price_url [export_vars -base $price_url_base { company_id price_id return_url }]
+
 	    append reference_price_html "
         <tr>
-          <td class=$bgcolor([expr $price_list_ctr % 2])>$price_company_name</td>
+          <td class=$bgcolor([expr $price_list_ctr % 2])>
+		<a href=\"[export_vars -base "/intranet/companies/view" { {company_id $price_company_id} return_url }]\">$price_company_name</a>
+	  </td>
           <td class=$bgcolor([expr $price_list_ctr % 2])>$price_uom</td>
           <td class=$bgcolor([expr $price_list_ctr % 2])>$price_task_type</td>
           <td class=$bgcolor([expr $price_list_ctr % 2])>$price_target_language</td>
@@ -494,7 +505,10 @@ order by
           <td class=$bgcolor([expr $price_list_ctr % 2])>$price_subject_area</td>
 <!--          <td class=$bgcolor([expr $price_list_ctr % 2])>$valid_from</td>		-->
 <!--          <td class=$bgcolor([expr $price_list_ctr % 2])>$valid_through</td> 	-->
-          <td class=$bgcolor([expr $price_list_ctr % 2])>$price $invoice_currency</td>
+          <td class=$bgcolor([expr $price_list_ctr % 2])>[string_truncate -len 30 $price_note]</td>
+          <td class=$bgcolor([expr $price_list_ctr % 2])>
+		<a href=\"$price_url\">$price $invoice_currency</a>
+	  </td>
         </tr>\n"
 	
 	    incr price_list_ctr

@@ -96,6 +96,7 @@ ad_form \
 	{subject_area_id:text(select),optional {label "[_ intranet-trans-invoices.Subject_Area]"} {options $subject_area_options} }
 	{amount:float(text) {label "[_ intranet-trans-invoices.Amount]"} {html {size 10}}}
 	{currency:text(select) {label "[_ intranet-trans-invoices.Currency]"} {options $currency_options} }
+	{note:text(textarea),optional {label "[_ intranet-core.Note]"} {}}
     }
 
 
@@ -121,7 +122,8 @@ insert into im_trans_prices (
 	source_language_id,
 	subject_area_id,
 	currency,
-	price
+	price,
+	note
 ) values (
 	:price_id,
 	:uom_id,
@@ -131,7 +133,8 @@ insert into im_trans_prices (
 	:source_language_id,
 	:subject_area_id,
 	:currency,
-	:amount
+	:amount,
+	:note
 )"
 
 } -edit_data {
@@ -144,7 +147,8 @@ insert into im_trans_prices (
 	source_language_id = :source_language_id,
 	subject_area_id = :subject_area_id,
 	currency = :currency,
-	price = :amount
+	price = :amount,
+	note = :note
 	where price_id = :price_id
     "
 

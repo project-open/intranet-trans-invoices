@@ -27,7 +27,7 @@ ad_proc im_trans_price_component { user_id company_id return_url} {
     set price_format "000.000"
     set price_url_base "/intranet-trans-invoices/price-lists/new"
 
-    set colspan 7
+    set colspan 8
     set price_list_html "
 <form action=/intranet-trans-invoices/price-lists/price-action method=POST>
 [export_form_vars company_id return_url]
@@ -40,6 +40,7 @@ ad_proc im_trans_price_component { user_id company_id return_url} {
 	  <td class=rowtitle>[_ intranet-trans-invoices.Target]</td>
 	  <td class=rowtitle>[_ intranet-trans-invoices.Subject]</td>
 	  <td class=rowtitle>[_ intranet-trans-invoices.Rate]</td>
+	  <td class=rowtitle>[_ intranet-core.Note]</td>
 	  <td class=rowtitle>[im_gif del "Delete"]</td>
 </tr>"
 
@@ -89,6 +90,7 @@ order by
           <td>$target_language</td>
 	  <td>$subject_area</td>
           <td><a href=\"$price_url\">$price_formatted $currency</a></td>
+          <td>[string_truncate -len 15 $note]</td>
           <td><input type=checkbox name=price_id.$price_id></td>
 	</tr>"
 	incr ctr

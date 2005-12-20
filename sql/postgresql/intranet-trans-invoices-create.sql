@@ -258,7 +258,8 @@ create table im_trans_prices (
 				not null,
 	price			numeric(12,4)
 				constraint im_trans_prices_price_nn
-				not null
+				not null,
+	note			varchar(1000)
 );
 
 -- make sure the same price doesn't get defined twice 
