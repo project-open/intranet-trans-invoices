@@ -82,43 +82,23 @@ set context_bar [im_context_bar [list /intranet/invoices/ "[_ intranet-trans-inv
 set invoice_id [im_new_object_id]
 set invoice_nr [im_next_invoice_nr -invoice_type_id $target_cost_type_id]
 set invoice_date $todays_date
-set payment_days [ad_parameter -package_id [im_package_cost_id] "DefaultCompanyInvoicePaymentDays" "" 30] 
-set due_date [db_string get_due_date "select to_date(to_char(sysdate,'YYYY-MM-DD'),'YYYY-MM-DD') + $payment_days from dual"]
+set default_payment_days [ad_parameter -package_id [im_package_cost_id] "DefaultCompanyInvoicePaymentDays" "" 30] 
+set due_date [db_string get_due_date "select to_date(to_char(sysdate,'YYYY-MM-DD'),'YYYY-MM-DD') + $default_payment_days from dual"]
 set provider_id [im_company_internal]
 set customer_id $company_id
 
 set cost_status_id [im_cost_status_created]
-set vat 0
 set tax 0
 set note ""
-set payment_method_id ""
-set template_id ""
-
+set default_vat 0
+set default_payment_method_id ""
+set default_invoice_template_id ""
 
 # ---------------------------------------------------------------
 # Gather company data from company_id
 # ---------------------------------------------------------------
 
-db_1row invoices_info_query "
-select 
-	c.*,
-        o.*,
-	c.invoice_template_id as template_id,
-	im_email_from_user_id(c.accounting_contact_id) as company_contact_email,
-	im_name_from_user_id(c.accounting_contact_id) as  company_contact_name,
-	c.company_name,
-	c.company_path,
-	c.company_path as company_short_name,
-        cc.country_name
-from
-	im_companies c, 
-        im_offices o,
-        country_codes cc
-where 
-        c.company_id = :company_id
-        and c.main_office_id=o.office_id(+)
-        and o.address_country_code=cc.iso(+)
-"
+db_1row invoices_info_query ""
 
 # ---------------------------------------------------------------
 # Render the "Invoice Data" and "Receipient" blocks
@@ -147,19 +127,19 @@ if {$cost_type_id == [im_cost_type_invoice]} {
         <tr> 
           <td class=roweven>[_ intranet-trans-invoices.Payment_terms]</td>
           <td class=roweven> 
-            <input type=text name=payment_days size=5 value='$payment_days'>
+            <input type=text name=payment_days size=5 value='$default_payment_days'>
             days date of invoice</td>
         </tr>
         <tr> 
           <td class=rowodd>[_ intranet-trans-invoices.Payment_Method]</td>
-          <td class=rowodd>[im_invoice_payment_method_select payment_method_id $payment_method_id]</td>
+          <td class=rowodd>[im_invoice_payment_method_select payment_method_id $default_payment_method_id]</td>
         </tr>\n"
 }
 
 append invoice_data_html "
         <tr> 
           <td class=roweven>[_ intranet-trans-invoices.Invoice_template]:</td>
-          <td class=roweven>[im_cost_template_select template_id $template_id]</td>
+          <td class=roweven>[im_cost_template_select template_id $default_invoice_template_id]</td>
         </tr>
 "
 
@@ -556,7 +536,7 @@ set grand_total_html "
             <table border=0 cellspacing=1 cellpadding=0>
               <tr> 
                 <td>[_ intranet-trans-invoices.VAT]</td>
-                <td><input type=text name=vat value='$vat' size=4> % &nbsp;</td>
+                <td><input type=text name=vat value='$default_vat' size=4> % &nbsp;</td>
               </tr>
             </table>
           </td>
