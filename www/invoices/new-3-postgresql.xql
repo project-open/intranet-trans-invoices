@@ -19,8 +19,6 @@
 select 
 	c.*,
         o.*,
-	im_email_from_user_id(c.accounting_contact_id) as company_contact_email,
-	im_name_from_user_id(c.accounting_contact_id) as  company_contact_name,
 	c.company_name,
 	c.company_path,
 	c.company_path as company_short_name,

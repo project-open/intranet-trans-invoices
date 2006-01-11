@@ -100,6 +100,30 @@ set default_invoice_template_id ""
 
 db_1row invoices_info_query ""
 
+
+# Logic to determine the default contact for this invoice.
+# This logic only makes sense if there is exactly one
+# project to be invoiced.
+set project_ids [db_list project_list "
+	select distinct project_id
+	from im_trans_tasks
+	where $tasks_where_clause
+"]
+
+set company_contact_id $accounting_contact_id
+if {1 == [llength $project_ids]} { 
+    set project_id [lindex $project_ids 0]
+    set company_contact_id [im_invoices_default_company_contact $customer_id $project_id]
+}
+
+
+db_1row accounting_contact_info "
+    select
+        im_name_from_user_id(:company_contact_id) as company_contact_name,
+        im_email_from_user_id(:company_contact_id) as company_contact_email
+    "
+
+
 # ---------------------------------------------------------------
 # Render the "Invoice Data" and "Receipient" blocks
 # ---------------------------------------------------------------
@@ -156,9 +180,9 @@ set receipient_html "
           <td  class=roweven>$vat_number</td>
         </tr>
         <tr> 
-          <td  class=rowodd>[_ intranet-trans-invoices.Accounting_Contact]</td>
+          <td  class=rowodd>[_ intranet-core.Contact]</td>
           <td  class=rowodd>
-            <A href=/intranet/users/view?user_id=$accounting_contact_id>$company_contact_name</A>
+	    [im_company_contact_select company_contact_id $company_contact_id $company_id]
           </td>
         </tr>
         <tr> 
