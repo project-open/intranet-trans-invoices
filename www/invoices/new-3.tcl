@@ -26,6 +26,7 @@ ad_page_contract {
     company_id:integer
     invoice_currency
     target_cost_type_id:integer
+    { aggregate_tasks_p "0" }
     { return_url ""}
 }
 
@@ -216,55 +217,58 @@ set receipient_html "
 # 6. Select and render invoicable items 
 # ---------------------------------------------------------------
 
-set sql "
-select 
-	t.task_id,
-	t.task_units,
-	t.task_name,
-	t.billable_units,
-	t.task_uom_id,
-	t.task_type_id,
-	t.project_id,
-	im_category_from_id(t.task_uom_id) as uom_name,
-	im_category_from_id(t.task_type_id) as type_name,
-	im_category_from_id(t.task_status_id) as task_status,
-	im_category_from_id(t.target_language_id) as target_language,
-	p.project_name,
-	p.project_path,
-	p.project_path as project_short_name
-from 
-	im_trans_tasks t,
-	im_projects p
-where 
-	$tasks_where_clause
-	and t.project_id = p.project_id
-order by
-	project_id, task_id
-"
+set task_table "" 
 
-set task_table "
-<tr> 
-  <td class=rowtitle>[_ intranet-trans-invoices.Task_Name]</td>
-  <td class=rowtitle>[_ intranet-trans-invoices.Units]</td>
-  <td class=rowtitle>[_ intranet-trans-invoices.Billable_Units]</td>
-  <td class=rowtitle>[_ intranet-trans-invoices.Target]</td>
-  <td class=rowtitle>[_ intranet-trans-invoices.UoM] [im_gif help "Unit of Measure"]</td>
-  <td class=rowtitle>[_ intranet-trans-invoices.Type]</td>
-  <td class=rowtitle>[_ intranet-trans-invoices.Status]</td>
-</tr>
-"
+if {$aggregate_tasks_p} {
+    set sql "
+	select 
+		t.task_id,
+		t.task_units,
+		t.task_name,
+		t.billable_units,
+		t.task_uom_id,
+		t.task_type_id,
+		t.project_id,
+		im_category_from_id(t.task_uom_id) as uom_name,
+		im_category_from_id(t.task_type_id) as type_name,
+		im_category_from_id(t.task_status_id) as task_status,
+		im_category_from_id(t.target_language_id) as target_language,
+		p.project_name,
+		p.project_path,
+		p.project_path as project_short_name
+	from 
+		im_trans_tasks t,
+		im_projects p
+	where 
+		$tasks_where_clause
+		and t.project_id = p.project_id
+	order by
+		project_id, task_id
+    "
 
-ns_log Notice "before rendering the task list $invoice_id"
+    set task_table "
+	<tr> 
+	  <td class=rowtitle>[_ intranet-trans-invoices.Task_Name]</td>
+	  <td class=rowtitle>[_ intranet-trans-invoices.Units]</td>
+	  <td class=rowtitle>[_ intranet-trans-invoices.Billable_Units]</td>
+	  <td class=rowtitle>[_ intranet-trans-invoices.Target]</td>
+	  <td class=rowtitle>[_ intranet-trans-invoices.UoM] [im_gif help "Unit of Measure"]</td>
+	  <td class=rowtitle>[_ intranet-trans-invoices.Type]</td>
+	  <td class=rowtitle>[_ intranet-trans-invoices.Status]</td>
+	</tr>
+    "
 
-set task_table_rows ""
-set ctr 0
-set colspan 7
-set old_project_id 0
-db_foreach select_tasks $sql {
+    ns_log Notice "before rendering the task list $invoice_id"
 
-    # insert intermediate headers for every project
-    if {$old_project_id != $project_id} {
-	append task_table_rows "
+    set task_table_rows ""
+    set ctr 0
+    set colspan 7
+    set old_project_id 0
+    db_foreach select_tasks $sql {
+
+	# insert intermediate headers for every project
+	if {$old_project_id != $project_id} {
+	    append task_table_rows "
 		<tr><td colspan=$colspan>&nbsp;</td></tr>
 		<tr>
 		  <td class=rowtitle colspan=$colspan>
@@ -274,10 +278,10 @@ db_foreach select_tasks $sql {
 	          </td>
 		  <input type=hidden name=select_project value=$project_id>
 		</tr>\n"
-	set old_project_id $project_id
-    }
+	    set old_project_id $project_id
+	}
 
-    append task_table_rows "
+	append task_table_rows "
         <input type=hidden name=im_trans_task value=$task_id>
 	<tr $bgcolor([expr $ctr % 2])> 
 	  <td align=left>$task_name</td>
@@ -288,14 +292,16 @@ db_foreach select_tasks $sql {
 	  <td>$type_name</td>
 	  <td>$task_status</td>
 	</tr>"
-    incr ctr
+	incr ctr
+    }
+
+    if {![string equal "" $task_table_rows]} {
+	append task_table $task_table_rows
+    } else {
+	append task_table "<tr><td colspan=$colspan align=center>[_ intranet-trans-invoices.No_tasks_found]</td></tr>"
+    }
 }
 
-if {![string equal "" $task_table_rows]} {
-    append task_table $task_table_rows
-} else {
-    append task_table "<tr><td colspan=$colspan align=center>[_ intranet-trans-invoices.No_tasks_found]</td></tr>"
-}
 
 # ---------------------------------------------------------------
 # 7. Select and format the sum of the invoicable items
@@ -333,12 +339,15 @@ if {![string equal "" $task_table_rows]} {
         </tr>\n"
 
 
-    # Calculate the sum of tasks (distinct by TaskType and UnitOfMeasure)
-    # and determine the price of each line using a custom definable
-    # function.
-    set task_sum_inner_sql "
+    if {$aggregate_tasks_p} {
+
+	# Calculate the sum of tasks (distinct by TaskType and UnitOfMeasure)
+	# and determine the price of each line using a custom definable
+	# function.
+	set task_sum_inner_sql "
 select
 	sum(t.billable_units) as task_sum,
+        '' as task_title,
 	t.task_type_id,
 	t.task_uom_id,
 	t.source_language_id,
@@ -360,42 +369,75 @@ group by
 	t.source_language_id,
 	t.target_language_id,
 	p.subject_area_id
-"
+        "
 
-    # Take the "Inner Query" with the data (above) and add some "long names" 
-    # (categories, client names, ...) for pretty output
-    set task_sum_sql "
-select
-	s.task_sum,
-	s.task_type_id,
-	s.subject_area_id,
-	s.source_language_id,
-	s.target_language_id,
-	s.task_uom_id,
-	c_type.category as task_type,
-	c_uom.category as task_uom,
-	c_target.category as target_language,
-	s.company_id,
-	s.project_id,
-	p.project_name,
-	p.project_path,
-	p.project_path as project_short_name,
-	p.company_project_nr
-from
-	im_categories c_uom,
-	im_categories c_type,
-	im_categories c_target,
-	im_projects p,
-	($task_sum_inner_sql) s
-where
-	s.task_type_id=c_type.category_id(+)
-	and s.task_uom_id=c_uom.category_id(+)
-	and s.target_language_id=c_target.category_id(+)
-	and s.project_id=p.project_id(+)
-order by
-	p.project_id
-    "
+	# Take the "Inner Query" with the data (above) and add some "long names" 
+	# (categories, client names, ...) for pretty output
+	set task_sum_sql "
+	select
+		trim(both ' ' from to_char(s.task_sum, :number_format)) as task_sum,
+		s.task_type_id,
+		s.subject_area_id,
+		s.source_language_id,
+		s.target_language_id,
+		s.task_uom_id,
+		c_type.category as task_type,
+		c_uom.category as task_uom,
+		c_target.category as target_language,
+		s.company_id,
+		s.project_id,
+		p.project_name,
+		p.project_path,
+		p.project_path as project_short_name,
+		p.company_project_nr
+	from
+		($task_sum_inner_sql) s
+	      LEFT JOIN
+		im_categories c_uom ON s.task_uom_id=c_uom.category_id
+	      LEFT JOIN
+		im_categories c_type ON s.task_type_id=c_type.category_id
+	      LEFT JOIN
+		im_categories c_target ON s.target_language_id=c_target.category_id
+	      LEFT JOIN
+		im_projects p ON s.project_id=p.project_id
+	order by
+		p.project_id
+	"
+	
+    } else {
 
+	
+	# Don't aggregate Tasks - Just create a list of the tasks
+        set task_sum_sql "
+	select
+		t.*,
+		t.task_name || 
+			' (' || 
+			im_category_from_id(t.source_language_id) || 
+			' -> ' ||
+			im_category_from_id(t.target_language_id) || 
+			')'
+			as task_title,
+		t.billable_units as task_sum,
+	        im_category_from_id(t.task_type_id) as task_type,
+	        im_category_from_id(t.task_uom_id) as task_uom,
+	        im_category_from_id(t.target_language_id) as target_language,
+	        p.project_name,
+	        p.project_path,
+	        p.project_path as project_short_name,
+	        p.company_project_nr,
+		p.subject_area_id
+	from
+	        im_trans_tasks t
+	    LEFT JOIN
+	        im_projects p ON (t.project_id = p.project_id)
+	where
+		$tasks_where_clause
+		and t.project_id=p.project_id
+	order by
+	        p.project_id
+        "
+    }
 
     # Calculate the price for the specific service.
     # Complicated undertaking, because the price depends on a number of variables,
@@ -465,7 +507,8 @@ order by
     set old_project_id 0
     set colspan 6
     set target_language_id ""
-    db_foreach task_sum $task_sum_sql {
+    set task_title ""
+    db_foreach task_sum_query $task_sum_sql {
 
 	# insert intermediate headers for every project
 	if {$old_project_id != $project_id} {
@@ -483,6 +526,10 @@ order by
 	        </td></tr>\n"
 	
 	    set old_project_id $project_id
+	}
+
+	if {"" == $task_title} {
+	    set task_title "$task_type ($target_language)"
 	}
 
 	# Determine the price from a ranked list of "price list hits"
@@ -527,7 +574,7 @@ order by
 	    <input type=text name=item_sort_order.$ctr size=2 value='$ctr'>
 	  </td>
           <td>
-	    <input type=text name=item_name.$ctr size=40 value='$task_type ($target_language)'>
+	    <input type=text name=item_name.$ctr size=40 value='$task_title'>
 	  </td>
           <td align=right>
 	    <input type=text name=item_units.$ctr size=4 value='$task_sum'>
@@ -546,6 +593,7 @@ order by
 	<input type=hidden name=item_type_id.$ctr value='$task_type_id'>\n"
 
 	incr ctr
+	set task_title ""
     }
 
 # ---------------------------------------------------------------
