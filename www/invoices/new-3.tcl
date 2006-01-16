@@ -221,7 +221,7 @@ set task_table ""
 
 if {$aggregate_tasks_p} {
     set sql "
-	select 
+	select
 		t.task_id,
 		t.task_units,
 		t.task_name,
@@ -406,7 +406,6 @@ group by
 	
     } else {
 
-	
 	# Don't aggregate Tasks - Just create a list of the tasks
         set task_sum_sql "
 	select
