@@ -124,6 +124,9 @@ db_1row accounting_contact_info "
         im_email_from_user_id(:company_contact_id) as company_contact_email
     "
 
+set invoice_office_id [db_string company_main_office_info "select main_office_id from im_companies where company_id = :org_company_id" -default ""]
+
+
 
 # ---------------------------------------------------------------
 # Render the "Invoice Data" and "Receipient" blocks
@@ -181,35 +184,14 @@ set receipient_html "
           <td  class=roweven>$vat_number</td>
         </tr>
         <tr> 
+          <td  class=rowodd>[lang::message::lookup "" intranet-invoices.Invoice_Address "Address"]</td>
+          <td  class=rowodd>[im_company_office_select invoice_office_id $invoice_office_id $company_id]</td>
+        </tr>
+        <tr> 
           <td  class=rowodd>[_ intranet-core.Contact]</td>
           <td  class=rowodd>
 	    [im_company_contact_select company_contact_id $company_contact_id $company_id]
           </td>
-        </tr>
-        <tr> 
-          <td  class=roweven>[_ intranet-trans-invoices.Adress]</td>
-          <td  class=roweven>$address_line1 <br> $address_line2</td>
-        </tr>
-        <tr> 
-          <td  class=rowodd>[_ intranet-trans-invoices.Zip]</td>
-          <td  class=rowodd>$address_postal_code</td>
-        </tr>
-        <tr> 
-          <td  class=roweven>[_ intranet-trans-invoices.Country]</td>
-          <td  class=roweven>$country_name</td>
-
-        </tr>
-        <tr> 
-          <td  class=rowodd>[_ intranet-trans-invoices.Phone]</td>
-          <td  class=rowodd>$phone</td>
-        </tr>
-        <tr> 
-          <td  class=roweven>[_ intranet-trans-invoices.Fax]</td>
-          <td  class=roweven>$fax</td>
-        </tr>
-        <tr> 
-          <td  class=rowodd>[_ intranet-trans-invoices.Email]</td>
-          <td  class=rowodd>$company_contact_email</td>
         </tr>
 "
 
