@@ -128,7 +128,7 @@ append price_list_html "
         append price_list_html "
 <ul>
   <li>
-    <a href=/intranet-trans-invoices/upload-prices?[export_url_vars company_id return_url]>
+    <a href=/intranet-trans-invoices/price-lists/upload-prices?[export_url_vars company_id return_url]>
       [_ intranet-trans-invoices.Upload_prices]</A>
     [_ intranet-trans-invoices.lt_for_this_company_via_]
   <li>
