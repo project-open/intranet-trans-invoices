@@ -201,7 +201,12 @@ set receipient_html "
 
 set task_table "" 
 
-if {$aggregate_tasks_p} {
+# Always generae the tasks table because:
+# - Show the same screen - make it easier for the user
+# - It includes the hidden variables "im_trans_task" necessary
+#   for new-4
+#
+if {1} {
     set sql "
 	select
 		t.task_id,
@@ -391,7 +396,8 @@ group by
 	# Don't aggregate Tasks - Just create a list of the tasks
         set task_sum_sql "
 	select
-		t.*,
+		t.source_language_id,
+		t.target_language_id,
 		t.task_name || 
 			' (' || 
 			im_category_from_id(t.source_language_id) || 
