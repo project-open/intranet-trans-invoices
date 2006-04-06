@@ -128,21 +128,21 @@ for {set i 1} {$i < $csv_files_len} {incr i} {
     }
 
     if {![string equal "" $task_type]} {
-        set task_type_id [db_string get_uom_id "select category_id from im_categories where category_type='Intranet Project Type' and category=:task_type"  -default 0]
+        set task_type_id [db_string get_uom_id "select category_id from im_categories where category_type='Intranet Project Type' and lower(category) = lower(trim(:task_type))"  -default 0]
         if {$task_type_id == 0} { append errmsg "<li>Didn't find Task Type '$task_type'\n" }
     }
 
-    set source_language_id [db_string get_uom_id "select category_id from im_categories where category_type='Intranet Translation Language' and category=:source_language"  -default ""]
+    set source_language_id [db_string get_uom_id "select category_id from im_categories where category_type='Intranet Translation Language' and lower(category) = lower(trim(:source_language))"  -default ""]
     if {$source_language_id == "" && $source_language != ""} { 
         append errmsg "<li>Didn't find Source Language '$source_language'\n" 
     }
 
-    set target_language_id [db_string get_uom_id "select category_id from im_categories where category_type='Intranet Translation Language' and category=:target_language"  -default ""]
+    set target_language_id [db_string get_uom_id "select category_id from im_categories where category_type='Intranet Translation Language' and lower(category) = lower(trim(:target_language))"  -default ""]
     if {$target_language_id == "" && $target_language != ""} { 
         append errmsg "<li>Didn't find Target Language '$target_language'\n" 
     }
 
-    set subject_area_id [db_string get_uom_id "select category_id from im_categories where category_type='Intranet Translation Subject Area' and category=:subject_area"  -default ""]
+    set subject_area_id [db_string get_uom_id "select category_id from im_categories where category_type='Intranet Translation Subject Area' and lower(category) = lower(trim(:subject_area))"  -default ""]
     if {$subject_area_id == "" && $subject_area != ""} { 
         append errmsg "<li>Didn't find Subject Area '$subject_area'\n" 
     }
