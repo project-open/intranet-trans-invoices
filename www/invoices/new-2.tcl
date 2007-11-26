@@ -75,29 +75,11 @@ if {[info exists select_project]} {
 # 3. Check the consistency of the select project and get client_id
 # ---------------------------------------------------------------
 
-# select tasks only from the selected projects ...
-# and form a $projects_where_clause that allows to select
-# only from these projects.
+# select tasks from the subprojects of the selected projects ...
 set in_clause_list [list]
 foreach selected_project $select_project {
         lappend in_clause_list $selected_project
 }
-# Simple projects_were: Select only the selected projects
-# set projects_where_clause "and p.project_id in ([join $in_clause_list ","])"
-
-# Recursive projects_where: Select both parent and subprojects
-set projects_where_clause "and p.project_id in (
-      select
-        children.project_id
-      from
-        im_projects parent,
-        im_projects children
-      where
-        children.project_status_id not in ([im_project_status_deleted],[im_project_status_canceled])
-        and children.tree_sortkey between parent.tree_sortkey and tree_right(parent.tree_sortkey)
-        and parent.project_id in ([join $in_clause_list ","])
-)"
-
 
 # check that all projects are from the same client
 set num_clients [db_string select_num_clients "
@@ -136,37 +118,40 @@ if {$target_cost_type_id == [im_cost_type_invoice]} {
 }
 
 set sql "
-select 
-	p.project_name,
-	p.project_path,
-	p.project_path as project_short_name,
-	t.task_id,
-	t.task_units,
-	t.task_name,
-	t.billable_units,
-	t.task_uom_id,
-	t.task_type_id,
-	t.project_id,
-	im_category_from_id(t.task_uom_id) as uom_name,
-	im_category_from_id(t.task_type_id) as type_name,
-	im_category_from_id(t.task_status_id) as task_status
-from 
-	im_trans_tasks t,
-	im_projects p
-where 
-	t.project_id = p.project_id
-	$task_invoice_id_null
-        and t.task_status_id in (
-                select task_status_id
-                from im_task_status
-                where upper(task_status) not in (
-                        'CLOSED','INVOICED','PARTIALLY PAID',
-                        'DECLINED','PAID','DELETED','CANCELED'
-                )
-        )
-        $projects_where_clause
-order by
-	project_id, task_id
+	select 
+		children.project_name,
+		children.project_path,
+		children.project_path as project_short_name,
+		t.task_id,
+		t.task_units,
+		t.task_name,
+		t.billable_units,
+		t.task_uom_id,
+		t.task_type_id,
+		t.project_id,
+		im_category_from_id(t.task_uom_id) as uom_name,
+		im_category_from_id(t.task_type_id) as type_name,
+		im_category_from_id(t.task_status_id) as task_status
+	from 
+		im_trans_tasks t,
+		im_projects children,
+		im_projects parent
+	where 
+		t.project_id = children.project_id
+		$task_invoice_id_null
+	        and t.task_status_id in (
+	                select task_status_id
+	                from im_task_status
+	                where upper(task_status) not in (
+	                        'CLOSED','INVOICED','PARTIALLY PAID',
+	                        'DECLINED','PAID','DELETED','CANCELED'
+	                )
+	        )
+		and children.project_status_id not in ([im_project_status_deleted],[im_project_status_canceled])
+		and children.tree_sortkey between parent.tree_sortkey and tree_right(parent.tree_sortkey)
+		and parent.project_id in ([join $in_clause_list ","])
+	order by
+		project_id, task_id
 "
 
 set task_table "
