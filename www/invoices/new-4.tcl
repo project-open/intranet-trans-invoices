@@ -65,6 +65,22 @@ if {1 == [llength $select_project]} {
 }
 
 # ---------------------------------------------------------------
+# Check Currency Consistency
+# ---------------------------------------------------------------
+
+set default_currency [ad_parameter -package_id [im_package_cost_id] "DefaultCurrency" "" "EUR"]
+set invoice_currency [lindex [array get item_currency] 1]
+if {"" == $invoice_currency} { set invoice_currency $default_currency }
+
+foreach item_nr [array names item_currency] {
+    if {$item_currency($item_nr) != $invoice_currency} {
+        ad_return_complaint 1 "<b>[_ intranet-invoices.Error_multiple_currencies]:</b><br>
+        [_ intranet-invoices.Blurb_multiple_currencies]"
+        ad_script_abort
+    }
+}
+
+# ---------------------------------------------------------------
 # Update invoice base data
 # ---------------------------------------------------------------
 
@@ -74,64 +90,45 @@ set invoice_exists_p [db_string invoice_count "select count(*) from im_invoices 
 if {!$invoice_exists_p} {
 
     # Let's create the new invoice
-    db_exec_plsql create_invoice "
-	DECLARE
-	    v_invoice_id        integer;
-	BEGIN
-	    v_invoice_id := im_trans_invoice.new (
-	        invoice_id              => :invoice_id,
-	        creation_user           => :user_id,
-	        creation_ip             => '[ad_conn peeraddr]',
-	        invoice_nr              => :invoice_nr,
-	        customer_id             => :customer_id,
-	        provider_id             => :provider_id,
-	        invoice_date            => :invoice_date,
-	        invoice_template_id     => :template_id,
-	        invoice_status_id	=> :cost_status_id,
-	        invoice_type_id		=> :cost_type_id,
-	        payment_method_id       => :payment_method_id,
-	        payment_days            => :payment_days,
-		amount			=> 0,
-	        vat                     => :vat,
-	        tax                     => :tax
-	    );
-	END;"
+    db_exec_plsql create_invoice ""
+
 }
 
 # Update the invoice itself
 db_dml update_invoice "
-update im_invoices 
-set 
-	invoice_nr	= :invoice_nr,
-	payment_method_id = :payment_method_id,
-	company_contact_id = :company_contact_id,
-	invoice_office_id = :invoice_office_id
-where
-	invoice_id = :invoice_id
+	update im_invoices 
+	set 
+		invoice_nr		= :invoice_nr,
+		payment_method_id	= :payment_method_id,
+		company_contact_id	= :company_contact_id,
+		invoice_office_id	= :invoice_office_id
+	where
+		invoice_id = :invoice_id
 "
 
 db_dml update_costs "
-update im_costs
-set
-	project_id	= :project_id,
-	cost_name	= :invoice_nr,
-        cost_nr         = :invoice_id,
-	customer_id	= :customer_id,
-	provider_id	= :provider_id,
-	cost_status_id	= :cost_status_id,
-	cost_type_id	= :cost_type_id,
-	cost_center_id 	= :cost_center_id,
-	template_id	= :template_id,
-	effective_date	= :invoice_date,
-	start_block	= ( select max(start_block) 
-			    from im_start_months 
-			    where start_block < :invoice_date),
-	payment_days	= :payment_days,
-	vat		= :vat,
-	tax		= :tax,
-	variable_cost_p = 't'
-where
-	cost_id = :invoice_id
+	update im_costs
+	set
+		project_id	= :project_id,
+		cost_name	= :invoice_nr,
+	        cost_nr         = :invoice_id,
+		customer_id	= :customer_id,
+		provider_id	= :provider_id,
+		cost_status_id	= :cost_status_id,
+		cost_type_id	= :cost_type_id,
+		cost_center_id 	= :cost_center_id,
+		template_id	= :template_id,
+		effective_date	= :invoice_date,
+		start_block	= ( select max(start_block) 
+				    from im_start_months 
+				    where start_block < :invoice_date),
+		payment_days	= :payment_days,
+		currency	= :invoice_currency,
+		vat		= :vat,
+		tax		= :tax,
+		variable_cost_p = 't'
+	where
+		cost_id = :invoice_id
 "
 
 # ---------------------------------------------------------------
@@ -184,18 +181,8 @@ foreach nr $item_list {
 # Update the invoice amount based on the invoice items
 # ---------------------------------------------------------------
 
-set update_invoice_amount_sql "
-update im_costs
-set amount = (
-	select sum(price_per_unit * item_units)
-	from im_invoice_items
-	where invoice_id = :invoice_id
-	group by invoice_id
-)
-where cost_id = :invoice_id
-"
-
-db_dml update_invoice_amount $update_invoice_amount_sql
+im_invoice_update_rounded_amount \
+    -invoice_id	$invoice_id 
 
 
 # ---------------------------------------------------------------
@@ -219,7 +206,6 @@ foreach project_id $select_project {
        "
     } err_msg
 }
-
 
 # ---------------------------------------------------------------
 # Update all invoiced im_trans_tasks
