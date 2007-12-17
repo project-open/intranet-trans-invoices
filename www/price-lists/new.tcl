@@ -57,7 +57,8 @@ set uom_options [db_list_of_lists uom_options "
 set task_type_options [db_list_of_lists uom_options "
 	select category, category_id
 	from im_categories
-	where category_type = 'Intranet Project Type'
+	where	category_type = 'Intranet Project Type'
+		and (enabled_p = 't' OR enabled_p is null)
 	order by category
 "]
 set task_type_options [linsert $task_type_options 0 [list "" ""]]
@@ -65,7 +66,8 @@ set task_type_options [linsert $task_type_options 0 [list "" ""]]
 set language_options [db_list_of_lists language_options "
 	select category, category_id
 	from im_categories
-	where category_type = 'Intranet Translation Language'
+	where	category_type = 'Intranet Translation Language'
+		and (enabled_p = 't' OR enabled_p is null)
 	order by category
 "]
 set language_options [linsert $language_options 0 [list "" ""]]
