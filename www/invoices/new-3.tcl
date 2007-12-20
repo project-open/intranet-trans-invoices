@@ -300,14 +300,13 @@ if {$aggregate_tasks_p} {
 		t.source_language_id,
 		t.target_language_id,
 		t.task_name || 
-			' (' || 
-			im_category_from_id(t.source_language_id) || 
-			' -> ' ||
-			im_category_from_id(t.target_language_id) || 
+			' (' || im_category_from_id(t.source_language_id) || 
+			' -> ' || im_category_from_id(t.target_language_id) || 
 			')'
-			as task_title,
+		as task_title,
 		t.billable_units as task_sum,
 		t.task_uom_id,
+		t.task_type_id,
 		im_file_type_from_trans_task(t.task_id) as file_type_id,
 	        im_category_from_id(t.task_type_id) as task_type,
 	        im_category_from_id(t.task_uom_id) as task_uom,
@@ -330,13 +329,9 @@ if {$aggregate_tasks_p} {
 }
 
 
-# db_foreach task_sum_query $task_sum_sql { ad_return_complaint 1 "uom=[im_category_from_id $task_uom_id], title=$task_title" }
-
-
 # ---------------------------------------------------------------
 # 
 # ---------------------------------------------------------------
-
 
 # Calculate the price for the specific service.
 # Complicated undertaking, because the price depends on a number of variables,
@@ -420,6 +415,8 @@ set task_sum_html ""
 
 db_foreach task_sum_query $task_sum_sql {
 
+    ns_log Notice "new-3/1: task_type_id=$task_type_id"
+
     # insert intermediate headers for every project
     if {$old_project_id != $project_id} {
 	append task_sum_html "
@@ -438,6 +435,8 @@ db_foreach task_sum_query $task_sum_sql {
 	set old_project_id $project_id
     }
     
+    ns_log Notice "new-3/2: task_type_id=$task_type_id"
+
     if {"" == $task_title} {
 	set msg_key [lang::util::suggest_key $task_type]
 	set task_type_l10n [lang::message::lookup "" intranet-core.$msg_key $task_type]
@@ -454,6 +453,8 @@ db_foreach task_sum_query $task_sum_sql {
 
     db_foreach references_prices $reference_price_sql {
 	
+        ns_log Notice "new-3/3: task_type_id=$task_type_id, relevancy=$price_relevancy"
+
 	ns_log Notice "new-3: company_id=$company_id, uom_id=$uom_id => price=$price_formatted, relevancy=$price_relevancy"
 	# Take the first line of the result list (=best score) as a price proposal:
 	if {$price_list_ctr == 1} {
