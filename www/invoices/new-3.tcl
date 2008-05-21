@@ -231,7 +231,7 @@ if {$aggregate_tasks_p} {
     # function.
     set task_sum_inner_sql "
 	select
-		sum(t.billable_units) as task_sum,
+		sum(coalesce(t.billable_units,0)) as task_sum,
 	        '' as task_title,
 		t.task_type_id,
 		t.task_uom_id,
@@ -304,7 +304,7 @@ if {$aggregate_tasks_p} {
 			' -> ' || im_category_from_id(t.target_language_id) || 
 			')'
 		as task_title,
-		t.billable_units as task_sum,
+		coalesce(t.billable_units,0) as task_sum,
 		t.task_uom_id,
 		t.task_type_id,
 		im_file_type_from_trans_task(t.task_id) as file_type_id,

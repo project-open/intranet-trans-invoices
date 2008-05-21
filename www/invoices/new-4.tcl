@@ -64,33 +64,15 @@ if {!$write_p} {
 # Check if there is a single project to which this document refers.
 # ---------------------------------------------------------------
 
+
+# Look for common super-projects for multi-project documents
+set select_project [im_invoices_unify_select_projects $select_project]
+
 set project_id ""
 if {1 == [llength $select_project]} {
     set project_id [lindex $select_project 0]
 } 
 
-if {[llength $select_project] > 1} {
-
-    # Get the list of all parent projects.
-    set parent_list [list]
-    foreach pid $select_project {
-	set parent_id [db_string pid "select parent_id from im_projects where project_id = :pid" -default ""]
-	while {"" != $parent_id} {
-	    set pid $parent_id
-	    set parent_id [db_string pid "select parent_id from im_projects where project_id = :pid" -default ""]
-	}
-	lappend parent_list $pid
-    }
-    
-    # Check if all parent projects are the same...
-    set project_id [lindex $parent_list 0]
-    foreach pid $parent_list {
-	if {$pid != $project_id} { set project_id "" }
-    }
-    
-    # Reset the list of "select_project", because we've found the superproject.
-    if {"" != $project_id} { set select_project [list $project_id] }
-}
 
 # ---------------------------------------------------------------
 # Check Currency Consistency
