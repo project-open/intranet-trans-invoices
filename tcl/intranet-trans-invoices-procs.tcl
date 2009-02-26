@@ -60,7 +60,7 @@ ad_proc im_trans_price_component { user_id company_id return_url} {
         set price_formatted ""
         catch { set price_formatted "[format "%0.3f" $price] $currency" } errmsg
         set min_price_formatted ""
-        catch { set min_price_formatted "[format "%0.0f" $min_price] $currency" } errmsg
+        catch { set min_price_formatted "[format "%0.3f" $min_price] $currency" } errmsg
 	if {"" == $min_price} { set min_price_formatted "" }
 
 	if {"" != $old_currency && ![string equal $old_currency $currency]} {
@@ -81,7 +81,7 @@ ad_proc im_trans_price_component { user_id company_id return_url} {
 	  <td>$subject_area</td>
 	  $file_type_html
           <td><a href=\"$price_url\">$price_formatted</a></td>
-          <td>$min_price_formatted</td>
+          <td><a href=\"$price_url\">$min_price_formatted</a></td>
           <td>[string_truncate -len 15 $note]</td>
           <td><input type=checkbox name=price_id.$price_id></td>
 	</tr>"
