@@ -171,6 +171,7 @@ for {set i 1} {$i < $csv_files_len} {incr i} {
 
     # It doesn't matter whether prices are given in European "," or American "." decimals
     regsub {,} $price {.} price
+    regsub {,} $min_price {.} min_price
 
 #    append page_body "uom_id=$uom_id\n"
 #    append page_body "company_id=$company_id\n"
