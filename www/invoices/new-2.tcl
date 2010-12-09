@@ -222,7 +222,7 @@ if {$target_cost_type_id == [im_cost_type_invoice]} {
 }
 
 set sql "
-        select
+        select distinct
                 children.project_name,
                 children.project_path,
                 children.project_path as project_short_name,
