@@ -128,7 +128,7 @@ set project_ids [db_list project_list "
 set company_contact_id $accounting_contact_id
 if {1 == [llength $project_ids]} { 
     set project_id [lindex $project_ids 0]
-    set company_contact_id [im_invoices_default_company_contact $customer_id $project_id]
+    set company_contact_id [im_invoices_default_company_contact -cost_type_id $target_cost_type_id -customer_id $customer_id -provider_id $provider_id -project_id $project_id]
 }
 
 db_1row accounting_contact_info "
