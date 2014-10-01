@@ -48,7 +48,7 @@ ad_proc im_trans_price_component { user_id company_id return_url} {
 		  <td class=rowtitle>[_ intranet-trans-invoices.Rate]</td>
 		  <td class=rowtitle>[lang::message::lookup "" intranet-trans-invoices.Minimum_Rate "Min Rate"]</td>
 		  <td class=rowtitle>[_ intranet-core.Note]</td>
-		  <td class=rowtitle>[im_gif del "Delete"]</td>
+		  <td class=rowtitle>[im_gif -translate_p 1 del "Delete"]</td>
 	</tr>
     "
 
