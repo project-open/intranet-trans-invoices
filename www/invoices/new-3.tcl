@@ -108,7 +108,6 @@ set note ""
 set default_vat 0
 set default_tax 0
 set default_payment_method_id ""
-set default_invoice_template_id ""
 
 # ---------------------------------------------------------------
 # Gather company data from company_id
@@ -744,5 +743,9 @@ db_foreach task_sum_query $task_sum_sql {
     set task_title ""
 }
 
-
-# ad_return_complaint 1 $task_sum_html
+# Set template for QUOTE, can't be done before cause value will be overwritten probably by some sql 
+if { [im_column_exists im_companies default_quote_template_id] && 3702 == $target_cost_type_id } {
+    set default_invoice_template_id [db_string get_data "select default_quote_template_id from im_companies where company_id = :company_id" -default ""]
+} else {
+    set default_invoice_template_id ""
+}
