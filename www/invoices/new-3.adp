@@ -22,7 +22,7 @@ foreach task_id $in_clause_list {
 @include_task_html;noquote@
 
 
-  <table cellpadding=0 cellspacing=0 bordercolor=#6699CC border=0 width=100%>
+  <table cellpadding=0 cellspacing=0 bordercolor=#6699CC border=0 width="100%">
     <tr valign=top> 
       <td>
 
@@ -108,7 +108,7 @@ foreach task_id $in_clause_list {
   </table>
 
   <!-- the list of tasks (invoicable items) -->
-  <table cellpadding=2 cellspacing=2 border=0 width='100%'>
+  <table cellpadding=2 cellspacing=2 border=0 width="100%">
 
 @table_header_html;noquote@
 <!--
@@ -125,7 +125,7 @@ foreach task_id $in_clause_list {
   </table>
 
   <!-- the list of task sums, distinguised by type and UOM -->
-  <table width=100%>
+  <table width="100%">
     <tr>
       <td align=right><table border=0 cellspacing=2 cellpadding=1>
 
