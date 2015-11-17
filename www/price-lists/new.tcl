@@ -40,7 +40,7 @@ set context [im_context_bar $page_title]
 if {![info exists uom_id] || "" == $uom_id} { set uom_id [im_uom_s_word] }
 
 if {"" == $currency} {
-    set currency [ad_parameter -package_id [im_package_cost_id] "DefaultCurrency" "" "EUR"]
+    set currency [im_parameter -package_id [im_package_cost_id] "DefaultCurrency" "" "EUR"]
 }
 
 # ------------------------------------------------------------------

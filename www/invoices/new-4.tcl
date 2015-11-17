@@ -78,7 +78,7 @@ if {1 == [llength $select_project]} {
 # Check Currency Consistency
 # ---------------------------------------------------------------
 
-set default_currency [ad_parameter -package_id [im_package_cost_id] "DefaultCurrency" "" "EUR"]
+set default_currency [im_parameter -package_id [im_package_cost_id] "DefaultCurrency" "" "EUR"]
 set invoice_currency [lindex [array get item_currency] 1]
 if {"" == $invoice_currency} { set invoice_currency $default_currency }
 

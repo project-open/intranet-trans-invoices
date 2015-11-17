@@ -97,7 +97,7 @@ set context_bar [im_context_bar [list /intranet/invoices/ "[_ intranet-trans-inv
 set invoice_id [im_new_object_id]
 set invoice_nr [im_next_invoice_nr -cost_type_id $target_cost_type_id]
 set invoice_date $todays_date
-set default_payment_days [ad_parameter -package_id [im_package_cost_id] "DefaultCompanyInvoicePaymentDays" "" 30] 
+set default_payment_days [im_parameter -package_id [im_package_cost_id] "DefaultCompanyInvoicePaymentDays" "" 30] 
 set enable_file_type_p [parameter::get_from_package_key -package_key intranet-trans-invoices -parameter "EnableFileTypeInTranslationPriceList" -default 0]
 set due_date [db_string get_due_date "select to_date(to_char(sysdate,'YYYY-MM-DD'),'YYYY-MM-DD') + $default_payment_days from dual"]
 set provider_id [im_company_internal]

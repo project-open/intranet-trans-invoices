@@ -86,7 +86,7 @@ set page_title [lang::message::lookup "" intranet-trans-invoices.New_cost_type_f
 set context_bar [im_context_bar $page_title]
 set page_focus "im_header_form.keywords"
 
-set default_currency [ad_parameter -package_id [im_package_cost_id] "DefaultCurrency" "" "EUR"]
+set default_currency [im_parameter -package_id [im_package_cost_id] "DefaultCurrency" "" "EUR"]
 
 if {![im_permission $user_id add_invoices]} {
     ad_return_complaint "[_ intranet-trans-invoices.lt_Insufficient_Privileg]" "
@@ -126,7 +126,7 @@ if {0 == $project_status_id} {
 }
 
 if { [empty_string_p $how_many] || $how_many < 1 } {
-    set how_many [ad_parameter -package_id [im_package_core_id] NumberResultsPerPage "" 50]
+    set how_many [im_parameter -package_id [im_package_core_id] NumberResultsPerPage "" 50]
 }
 set end_idx [expr $start_idx + $how_many]
 
