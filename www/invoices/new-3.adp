@@ -11,7 +11,7 @@
 <%= [im_costs_navbar "none" "/intranet/invoicing/index" "" "" [list]] %>
 
 <form action=new-4 method=POST>
-<%= [export_form_vars customer_id provider_id invoice_id cost_status_id return_url] %>
+<%= [export_vars -form {customer_id provider_id invoice_id cost_status_id return_url}] %>
 
 <%
 set include_task_html ""

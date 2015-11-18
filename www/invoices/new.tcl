@@ -342,7 +342,7 @@ if {[string compare $letter "ALL"]} {
 
 set filter_html "
 <form method=get action='/intranet-trans-invoices/invoices/new'>
-[export_form_vars start_idx project_id order_by how_many target_cost_type_id view_name include_subprojects_p letter]
+[export_vars -form {start_idx project_id order_by how_many target_cost_type_id view_name include_subprojects_p letter}]
 <table border=0 cellpadding=0 cellspacing=0>
 "
 

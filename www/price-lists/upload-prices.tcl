@@ -26,7 +26,7 @@ set context_bar [im_context_bar [list "/intranet/companies/" "[_ intranet-trans-
 
 set page_body "
 <form enctype=multipart/form-data method=POST action=upload-prices-2.tcl>
-[export_form_vars company_id return_url]
+[export_vars -form {company_id return_url}]
                     <table border=0>
                       <tr> 
                         <td align=right>Filename: </td>
