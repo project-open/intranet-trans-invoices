@@ -198,7 +198,7 @@ if {$project_id != 0} {
 	
 	# Just one project and no subproject - just go forward
 	set invoice_currency $default_currency
-	ad_returnredirect "/intranet-trans-invoices/invoices/new-2?select_project=$project_id&[export_url_vars target_cost_type_id invoice_currency]"
+	ad_returnredirect "/intranet-trans-invoices/invoices/new-2?select_project=$project_id&[export_vars -url {target_cost_type_id invoice_currency}]"
 	set page_body ""
 	return
 

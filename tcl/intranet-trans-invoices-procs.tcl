@@ -114,7 +114,7 @@ ad_proc im_trans_price_component { user_id company_id return_url} {
         append price_list_html "
 	<ul>
 	  <li>
-	    <a href=/intranet-trans-invoices/price-lists/upload-prices?[export_url_vars company_id return_url]>
+	    <a href=/intranet-trans-invoices/price-lists/upload-prices?[export_vars -url {company_id return_url}]>
 	      [_ intranet-trans-invoices.Upload_prices]</A>
 	    [_ intranet-trans-invoices.lt_for_this_company_via_]
 	  <li>
