@@ -1,13 +1,13 @@
 -- /packages/intranet-trans-invoices/sql/oracle/intranet-trans-invoices-create.sql
 --
--- Copyright (c) 2003-2004 Project/Open
+-- Copyright (c) 2003-2004 ]project-open[
 --
 -- All rights reserved. Please check
 -- http://www.project-open.com/license/ for details.
 --
 -- @author frank.bergmann@project-open.com
 
--- Translation Invoicing for Project/Open
+-- Translation Invoicing for ]project-open[
 --
 -- Defines:
 --	im_trans_prices			List of prices with defaults
@@ -369,7 +369,7 @@ show errors;
 ---------------------------------------------------------
 -- Register the component in the core TCL pages
 --
--- These DB-entries allow the pages of Project/Open Core
+-- These DB-entries allow the pages of ]project-open[ Core
 -- to render the forum components in the Home, Users, Projects
 -- and Company pages.
 --
