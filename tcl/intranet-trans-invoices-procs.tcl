@@ -79,7 +79,7 @@ ad_proc im_trans_price_component { user_id company_id return_url} {
 	  $file_type_html
           <td><a href=\"$price_url\">$price_formatted</a></td>
           <td>$min_price_formatted</td>
-          <td>[string_truncate -len 15 $note]</td>
+          <td>[string range $note 0 14]</td>
           <td><input type=checkbox name=price_id.$price_id></td>
 	</tr>"
 	incr ctr
