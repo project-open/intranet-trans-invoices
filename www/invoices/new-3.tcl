@@ -687,7 +687,7 @@ db_foreach task_sum_query $task_sum_sql {
 	          <td class=$bgcolor([expr $price_list_ctr % 2])>$price_source_language</td>
 	          <td class=$bgcolor([expr $price_list_ctr % 2])>$price_subject_area</td>
 		  $file_type_html
-	          <td class=$bgcolor([expr $price_list_ctr % 2])>[string_truncate -len 30 $price_note]</td>
+	          <td class=$bgcolor([expr $price_list_ctr % 2])>[string range $price_note 0 29]</td>
 	          <td class=$bgcolor([expr $price_list_ctr % 2])>
 			<a href=\"$price_url\">$price_formatted $invoice_currency</a>
 		  </td>
