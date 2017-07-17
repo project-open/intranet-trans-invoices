@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
-<message_catalog package_key="intranet-trans-invoices" package_version="3.4.0.7.0" locale="fr_FR" charset="ISO-8859-1">
+<message_catalog package_key="intranet-trans-invoices" locale="fr_FR" charset="ISO-8859-1">
 
   <msg key="Accounting_Contact">Contact de facturation</msg>
   <msg key="Add_New">Ajouter nouveau</msg>
@@ -45,7 +45,7 @@
   <msg key="lt_Generate_Purchase_Ord">Générer des bons de commande</msg>
   <msg key="lt_Insufficient_Privileg">Autorisations insuffisantes</msg>
   <msg key="lt_It_contains_some_comm">Contient des commentaires</msg>
-  <msg key="lt_Please_backup_and_res">Veuillez revenir en arrière et limiter la sélection aux projets d'un seul client.</msg>
+  <msg key="lt_Please_backup_and_res">Veuillez revenir en arrière et limiter la sélection aux projets d&#39;un seul client.</msg>
   <msg key="lt_sample_pricelist_CSV_">Echantillon de la liste de prix (fichier CSV)</msg>
   <msg key="lt_Select_Projects_for_I">Sélectionner les projets pour la facture</msg>
   <msg key="lt_Select_Tasks_for_Invo">Sélectionner les tâches pour facturation</msg>
@@ -57,9 +57,9 @@
   <msg key="lt_Unknown_action_for_pr">Action inconnue pour action-prix</msg>
   <msg key="lt_Upload_Client_Prices_">Importer la CSV des prix client</msg>
   <msg key="lt_Use_the_quotBrowsequo">Utilisez le bouton &amp;amp;quot;Browse...&amp;amp;quot; pour localiser votre fichier, puis cliquer sur &amp;amp;quot;Open&amp;amp;quot;.</msg>
-  <msg key="lt_You_dont_have_suffici">Vous n'avez pas suffisamment d'autorisations pour voir cette page.</msg>
-  <msg key="lt_You_have_insufficient">Vous n'avez pas suffisamment d'autorisations pour voir cette page</msg>
-  <msg key="lt_You_have_insufficient_1">Vous n'avez pas suffisamment d'autorisations pour voir cette page</msg>
+  <msg key="lt_You_dont_have_suffici">Vous n&#39;avez pas suffisamment d&#39;autorisations pour voir cette page.</msg>
+  <msg key="lt_You_have_insufficient">Vous n&#39;avez pas suffisamment d&#39;autorisations pour voir cette page</msg>
+  <msg key="lt_You_have_insufficient_1">Vous n&#39;avez pas suffisamment d&#39;autorisations pour voir cette page</msg>
   <msg key="lt_You_have_selected_mul">Vous avez sélectionné plusieurs clients</msg>
   <msg key="lt_You_have_selected_mul_1">Vous avez sélectionné plusieurs clients.</msg>
   <msg key="Minimum_Rate">Tarif minimum</msg>
@@ -76,10 +76,10 @@
   <msg key="New_Translation_Quote">Nouveau devis traduction</msg>
   <msg key="Next_Page">Page suivante</msg>
   <msg key="No">No</msg>
-  <msg key="No_company_found">Aucune société n'a été trouvée</msg>
-  <msg key="No_prices_found">Aucun prix n'a été trouvé</msg>
-  <msg key="No_tasks_found">Aucune tâche n'a été trouvée</msg>
-  <msg key="No_Trans_Tasks">Aucune tâche de traduction n'a été trouvée pour ce projet.</msg>
+  <msg key="No_company_found">Aucune société n&#39;a été trouvée</msg>
+  <msg key="No_prices_found">Aucun prix n&#39;a été trouvé</msg>
+  <msg key="No_tasks_found">Aucune tâche n&#39;a été trouvée</msg>
+  <msg key="No_Trans_Tasks">Aucune tâche de traduction n&#39;a été trouvée pour ce projet.</msg>
   <msg key="One_project">Un projet</msg>
   <msg key="Order">Commande</msg>
   <msg key="Payment_Method">Moyen de paiement</msg>
@@ -125,7 +125,7 @@
   <msg key="Upload_CSV">Importer CSV</msg>
   <msg key="Upload_prices">Importer les prix</msg>
   <msg key="Valid_From">Valable à partir du</msg>
-  <msg key="Valid_Through">Valable jusqu'au</msg>
+  <msg key="Valid_Through">Valable jusqu&#39;au</msg>
   <msg key="VAT">TVA</msg>
   <msg key="Work_Phone">Téléphone professionnel</msg>
   <msg key="XTr">XTr</msg>

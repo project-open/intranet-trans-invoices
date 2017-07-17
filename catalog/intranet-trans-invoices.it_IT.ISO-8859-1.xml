@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
-<message_catalog package_key="intranet-trans-invoices" package_version="3.4.0.7.0" locale="it_IT" charset="ISO-8859-1">
+<message_catalog package_key="intranet-trans-invoices" locale="it_IT" charset="ISO-8859-1">
 
   <msg key="Accounting_Contact">Contatto contabilità</msg>
   <msg key="Add_New">Nuovo</msg>
@@ -10,7 +10,7 @@
   <msg key="Client">Cliente</msg>
   <msg key="Clients">Clienti</msg>
   <msg key="Company">Azienda</msg>
-  <msg key="Company_name">Nome dell'azienda</msg>
+  <msg key="Company_name">Nome dell&#39;azienda</msg>
   <msg key="context">contesto</msg>
   <msg key="Country">Paese</msg>
   <msg key="Create_Invoice">Crea %type_name%</msg>
@@ -38,20 +38,20 @@
   <msg key="Line">Linea</msg>
   <msg key="lt_Check_this_sample_pra">Controlla questo %sample_pracelist_link%.</msg>
   <msg key="lt_Create_a_new_company_">Crea una nuova azienda a partire dal presente free-lance</msg>
-  <msg key="lt_Create_Purchase_Order">Crea ordine d'acquisto</msg>
+  <msg key="lt_Create_Purchase_Order">Crea ordine d&#39;acquisto</msg>
   <msg key="lt_first_names_last_name">%first_names% %last_name% Azienda</msg>
   <msg key="lt_first_names_last_name_1">%first_names% %last_name% Ufficio</msg>
   <msg key="lt_for_this_company_via_">per questa azienda attraverso un file CSV.</msg>
-  <msg key="lt_Generate_Purchase_Ord">Genera ordini d'acquisto</msg>
+  <msg key="lt_Generate_Purchase_Ord">Genera ordini d&#39;acquisto</msg>
   <msg key="lt_Insufficient_Privileg">Privilegi insufficienti</msg>
-  <msg key="lt_It_contains_some_comm">Contiene alcuni commenti all'interno.</msg>
+  <msg key="lt_It_contains_some_comm">Contiene alcuni commenti all&#39;interno.</msg>
   <msg key="lt_Please_backup_and_res">Tornare indietro e limitare la selezione ai progetti di un solo cliente.</msg>
-  <msg key="lt_sample_pricelist_CSV_">file CSV con tariffario d'esempio</msg>
+  <msg key="lt_sample_pricelist_CSV_">file CSV con tariffario d&#39;esempio</msg>
   <msg key="lt_Select_Projects_for_I">Seleziona progetti da fatturare</msg>
   <msg key="lt_Select_Tasks_for_Invo">Seleziona attività da fatturare</msg>
   <msg key="lt_There_are_currently_n">Non esistono fatture corrispondenti ai criteri introdotti</msg>
   <msg key="lt_There_are_currently_n_1">Non esistono progetti corrispondenti ai criteri introdotti</msg>
-  <msg key="lt_To_create_a_new_invoi">Per creare una nuova fattura scegliere uno o più progetti&lt;br&gt; &lt;em&gt;dello stesso cliente&lt;/em&gt; e fare clic sul bottone &quot;Nuova fattura&quot; &lt;br&gt; in fondo alla pagina.</msg>
+  <msg key="lt_To_create_a_new_invoi">Per creare una nuova fattura scegliere uno o più progetti&lt;br&gt; &lt;em&gt;dello stesso cliente&lt;/em&gt; e fare clic sul bottone &#34;Nuova fattura&#34; &lt;br&gt; in fondo alla pagina.</msg>
   <msg key="lt_Unknown_action_for_pr">Azione sconosciuta per azione-prezzo.</msg>
   <msg key="lt_UOMtd__________td_cla">UM#&lt;/td&gt;  &lt;td class=rowtitle&gt;&lt;#_ Rate</msg>
   <msg key="lt_Upload_Client_Prices_">Carica tariffario cliente in CSV</msg>
@@ -68,7 +68,7 @@
   <msg key="New_Customer_Invoice_from_Translation_Tasks">Nuova fattura cliente da attività di traduzione</msg>
   <msg key="New_Invoice">Nuovo %type_name%</msg>
   <msg key="New_Price">Nuovo prezzo</msg>
-  <msg key="New_Purchase_Order">Nuovo ordine d'acquisto</msg>
+  <msg key="New_Purchase_Order">Nuovo ordine d&#39;acquisto</msg>
   <msg key="New_Quote_from_Translation_Tasks">Nuovo preventivo da attività di traduzione</msg>
   <msg key="New_Trans_Invoice">Nuova fattura da traduzione</msg>
   <msg key="New_Translation_Customer_Invoice">Nuova fattura cliente traduzione</msg>
@@ -92,7 +92,7 @@
   <msg key="Project_Status">Stato del progetto</msg>
   <msg key="Project_Type">Tipo di progetto</msg>
   <msg key="Projects">Progetti</msg>
-  <msg key="Purchase_Orders">Ordini d'acquisto</msg>
+  <msg key="Purchase_Orders">Ordini d&#39;acquisto</msg>
   <msg key="Rate">Tariffa</msg>
   <msg key="Recipient">Destinatario</msg>
   <msg key="Recr_Status">Stato selez</msg>
@@ -110,7 +110,7 @@
   <msg key="Submit">Invia</msg>
   <msg key="Submit_and_Upload">Invia e carica</msg>
   <msg key="Target">Arrivo</msg>
-  <msg key="Target_Language">Lingua d'arrivo</msg>
+  <msg key="Target_Language">Lingua d&#39;arrivo</msg>
   <msg key="Task_Name">Nome attività</msg>
   <msg key="Task_Type">Tipo di attività</msg>
   <msg key="TAX">RITENUTA</msg>

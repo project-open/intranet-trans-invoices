@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
-<message_catalog package_key="intranet-trans-invoices" package_version="3.4.0.7.0" locale="en_US" charset="ISO-8859-1">
+<message_catalog package_key="intranet-trans-invoices" locale="en_US" charset="ISO-8859-1">
 
   <msg key="Accounting_Contact">Accounting Contact</msg>
   <msg key="Add_New">Add New</msg>
@@ -52,14 +52,14 @@
   <msg key="lt_There_are_currently_n">There are currently no invoices matching the selected criteria</msg>
   <msg key="lt_There_are_currently_n_1">There are currently no projects matching the selected criteria</msg>
   <msg key="lt_To_create_a_new_invoi">To create a new invoice please select one or more projects&lt;br&gt;
-		&lt;em&gt;of the same client&lt;/em&gt; and press the &quot;New Invoice&quot; button &lt;br&gt;
+		&lt;em&gt;of the same client&lt;/em&gt; and press the &#34;New Invoice&#34; button &lt;br&gt;
 		at the bottom of the page.</msg>
   <msg key="lt_Unknown_action_for_pr">Unknown action for price-action.</msg>
   <msg key="lt_UOMtd__________td_cla">UOM#&lt;/td&gt;
           &lt;td class=rowtitle&gt;&lt;#_ Rate</msg>
   <msg key="lt_Upload_Client_Prices_">Upload Client Prices CSV</msg>
   <msg key="lt_Use_the_quotBrowsequo">Use the &amp;quot;Browse...&amp;quot; button to locate your file, then click &amp;quot;Open&amp;quot;.</msg>
-  <msg key="lt_You_dont_have_suffici">You don't have sufficient privileges to see this page.</msg>
+  <msg key="lt_You_dont_have_suffici">You don&#39;t have sufficient privileges to see this page.</msg>
   <msg key="lt_You_have_insufficient">You have insufficient permissions to view this page</msg>
   <msg key="lt_You_have_insufficient_1">You have insufficient privileges to use this page</msg>
   <msg key="lt_You_have_selected_mul">You have selected multiple clients</msg>

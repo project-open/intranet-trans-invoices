@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
-<message_catalog package_key="intranet-trans-invoices" package_version="3.4.0.7.0" locale="nl_NL" charset="ISO-8859-1">
+<message_catalog package_key="intranet-trans-invoices" locale="nl_NL" charset="ISO-8859-1">
 
   <msg key="Accounting_Contact">Financieel contactpersoon</msg>
   <msg key="Add_New">Nieuwe toevoegen</msg>
@@ -51,7 +51,7 @@
   <msg key="lt_Select_Tasks_for_Invo">Selecteer taken voor facturering</msg>
   <msg key="lt_There_are_currently_n">Er zijn geen facturen die overeenkomen met de selectie criteria</msg>
   <msg key="lt_There_are_currently_n_1">Er zijn geen projecten die overeenkomen met de selectie criteria</msg>
-  <msg key="lt_To_create_a_new_invoi">Om een nieuwe factuur te maken dient u één of meerdere projecten &lt;br&gt;  &lt;em&gt;van dezelfde klant&lt;/em&gt; te selecteren. Druk dan op de &quot;Nieuwe factuur&quot; knop &lt;br&gt; onderaan de pagina.</msg>
+  <msg key="lt_To_create_a_new_invoi">Om een nieuwe factuur te maken dient u één of meerdere projecten &lt;br&gt;  &lt;em&gt;van dezelfde klant&lt;/em&gt; te selecteren. Druk dan op de &#34;Nieuwe factuur&#34; knop &lt;br&gt; onderaan de pagina.</msg>
   <msg key="lt_Unknown_action_for_pr">Onbekende actie voor prijs-actie.</msg>
   <msg key="lt_UOMtd__________td_cla">Meeteenheid #&lt;/td&gt;  &lt;td class=rowtitle&gt;&lt;#_ tarief</msg>
   <msg key="lt_Upload_Client_Prices_">Upload klant prijzen CSV</msg>
