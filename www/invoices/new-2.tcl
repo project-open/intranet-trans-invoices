@@ -21,6 +21,7 @@ ad_page_contract {
     target_cost_type_id:integer
     { order_by "Project nr" }
     { view_name "invoice_tasks" }
+    { converter "none" }
     { return_url ""}
 }
 
@@ -153,15 +154,11 @@ set view_order_by_clause ""
 
 
 set column_sql "
-select
-        vc.*
-from
-        im_view_columns vc
-where
-        view_id=:view_id
+select	vc.*
+from	im_view_columns vc
+where	view_id=:view_id
         and group_id is null
-order by
-        sort_order"
+order by sort_order"
 
 db_foreach column_list_sql $column_sql {
     if {"" == $visible_for || [eval $visible_for]} {
@@ -302,6 +299,11 @@ set colspan 11
 set old_project_id 0
 db_foreach select_tasks $sql {
 
+    set converted_tuple [im_trans_invoices_converter_$converter -project_id $project_id -task_id $task_id -uom_id $task_uom_id -units $task_units]
+    set converted_uom_id [lindex $converted_tuple 0]
+    set converted_task_units [lindex $converted_tuple 1]
+    set converted_uom_name [im_category_from_id $converted_uom_id]
+
     # insert intermediate headers for every project
     if {$old_project_id != $project_id} {
 	append task_table_rows "
@@ -330,6 +332,9 @@ db_foreach select_tasks $sql {
 	  <td align=right>$uom_name</td>
 	  <td>$type_name</td>
 	  <td>$task_status</td>
+          <td>&nbsp;</td>
+	  <td align=right>$converted_uom_name</td>
+	  <td align=right>$converted_task_units</td>
 	</tr>"
     incr ctr
 }
@@ -357,7 +362,7 @@ set page_body "
 [im_costs_navbar "none" "/intranet/invoicing/index" "" "" [list]]
 
 <form action=new-3 method=POST>
-[export_vars -form {company_id invoice_currency target_cost_type_id return_url order_by}]
+[export_vars -form {company_id invoice_currency target_cost_type_id converter return_url order_by}]
 
   <!-- the list of tasks (invoicable items) -->
   <table cellpadding=2 cellspacing=2 border=0>

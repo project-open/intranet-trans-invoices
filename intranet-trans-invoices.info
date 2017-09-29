@@ -9,7 +9,7 @@
     <singleton-p>t</singleton-p>
     <auto-mount>intranet-trans-invoices</auto-mount>
 
-    <version name="5.0.2.3.0" url="http://www.project-open.net/download/apm/intranet-trans-invoices-5.0.2.3.0.apm">
+    <version name="5.0.2.3.1" url="http://www.project-open.net/download/apm/intranet-trans-invoices-5.0.2.3.1.apm">
         <owner url="mailto:frank.bergmann@project-open.com">Frank Bergmann</owner>
         <vendor url="http://www.project-open.com/">]project-open[</vendor>
         <release-date>2016-11-15</release-date>
@@ -25,6 +25,7 @@
             <parameter datatype="string"  min_n_values="1"  max_n_values="1"  name="AggregateTasksCheckboxEnabled"  default="checked" description="What is the default operation when aggregating translation tasks? Possible options include &quot;checked&quot; (aggregate tasks of the same type), &quot;unchecked&quot; (leave the checkbox empty, so tasks will be listed individually) or &quot;disabled&quot; (disable the option to aggregate tasks). Default is &quot;checked&quot;."/>
             <parameter datatype="number"  min_n_values="1"  max_n_values="1"  name="DefaultPriceListUomID"  default="324" description="By default prices are calculated by 324 - hours."/>
             <parameter datatype="number"  min_n_values="1"  max_n_values="1"  name="EnableFileTypeInTranslationPriceList"  default="0" description="Do you want file types to appear in your price list? Default is no for most translation companies."/>
+            <parameter datatype="string"  min_n_values="1"  max_n_values="1"  name="DefaultPriceModelConverter" default="none" description="Choose the default price model converter. Default value is 'none' for no conversion."/>
         </parameters>
 
     </version>

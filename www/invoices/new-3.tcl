@@ -30,6 +30,7 @@ ad_page_contract {
     { order_by "Project nr" }
     { cost_center_id:integer 0}
     { aggregate_tasks_p "0" }
+    { converter "none" }
     { return_url ""}
 }
 
@@ -162,15 +163,11 @@ set extra_wheres [list]
 set view_order_by_clause ""
 
 set column_sql "
-select
-        vc.*
-from
-        im_view_columns vc
-where
-        view_id=:view_id
+select	vc.*
+from	im_view_columns vc
+where	view_id = :view_id
         and group_id is null
-order by
-        sort_order"
+order by sort_order"
 
 db_foreach column_list_sql $column_sql {
     if {"" == $visible_for || [eval $visible_for]} {
@@ -185,9 +182,6 @@ db_foreach column_list_sql $column_sql {
         }
     }
 }
-
-
-# ad_return_complaint 1 $view_order_by_clause
 
 if {$view_order_by_clause != ""} {
     if { $view_order_by_clause == "task_status" } {
@@ -211,11 +205,6 @@ if {$view_order_by_clause != ""} {
             set order_by_clause "t.task_name"
 }
 
-
-
-
-# ad_return_complaint 1 $order_by_clause
-
 # ---------------------------------------------------------------
 # 6. Select and render invoicable items 
 # ---------------------------------------------------------------
@@ -224,9 +213,6 @@ if {$view_order_by_clause != ""} {
 # - Show the same screen - make it easier for the user
 # - It includes the hidden variables "im_trans_task" necessary for new-4
 #
-
-
-
 set sql "
 	select
 		t.task_id,
@@ -616,7 +602,14 @@ set task_sum_html ""
 
 db_foreach task_sum_query $task_sum_sql {
 
-    ns_log Notice "new-3: src=[im_category_from_id $source_language_id], tgt=$target_language, type=$task_type, uom=$task_uom_id, uom=$task_uom, sub=[im_category_from_id $subject_area_id]"
+    ns_log Notice "new-3: src=[im_category_from_id $source_language_id], tgt=$target_language, type=$task_type, uom=$task_uom_id, sub=[im_category_from_id $subject_area_id]"
+    
+    if {1} {
+	set converted_tuple [im_trans_invoices_converter_$converter -project_id $project_id -task_id $task_id -uom_id $task_uom_id -units $task_sum]
+	set task_uom_id [lindex $converted_tuple 0]
+	set task_sum [lindex $converted_tuple 1]
+	set task_uom [im_category_from_id $task_uom_id]
+    }
 
     # Make sure the material exists.
     # The procedure will peek variables defined in DynFields of im_material

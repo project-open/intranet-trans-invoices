@@ -87,6 +87,7 @@ set context_bar [im_context_bar $page_title]
 set page_focus "im_header_form.keywords"
 
 set default_currency [im_parameter -package_id [im_package_cost_id] "DefaultCurrency" "" "EUR"]
+set default_converter [parameter::get_from_package_key -package_key "intranet-trans-invoices" -parameter DefaultPriceModelConverter -default "none"]
 
 if {![im_permission $user_id add_invoices]} {
     ad_return_complaint "[_ intranet-trans-invoices.lt_Insufficient_Privileg]" "
@@ -415,12 +416,26 @@ if { ![empty_string_p $query_string] } {
 
 append table_header_html "<tr>\n"
 foreach col $column_headers {
+    regsub -all " " $col "_" col_txt
+    set col_txt [lang::message::lookup "" intranet-core.$col_txt $col]
+    
+    if { [string compare $order_by $col] == 0 } {
+        append table_header_html "  <td class=rowtitle>$col_txt</td>\n"
+    } else {
+        #set col [lang::util::suggest_key $col]
+        append table_header_html "  <td class=rowtitle><a href=\"${url}order_by=[ns_urlencode $col]\">$col_txt</a></td>\n"
+    }
+
+
+    set ttt {
     set col_txt [lang::util::suggest_key $col]
     if { [string compare $order_by $col] == 0 } {
 	append table_header_html "  <td class=rowtitle>[_ intranet-trans-invoices.$col_txt]</td>\n"
     } else {
 	append table_header_html "  <td class=rowtitle><a href=\"${url}order_by=[ns_urlencode $col]\">[_ intranet-trans-invoices.$col_txt]</a></td>\n"
     }
+    }
+
 }
 append table_header_html "</tr>\n"
 
@@ -521,11 +536,27 @@ set table_continuation_html "
   </td>
 </tr>"
 
+set converter_options [im_trans_invoices_converter_options]
 set submit_button "
       <tr>
         <td colspan=$colspan align=left>
-	   [_ intranet-trans-invoices.Invoice_Currency]: [im_currency_select invoice_currency $default_currency]
+           <table>
+           <tr>
+           <td>[_ intranet-trans-invoices.Invoice_Currency]:</td>
+           <td>[im_currency_select invoice_currency $default_currency]</td>
+           <td width=200>&nbsp;</td>
+           </tr>
+           <tr>
+           <td>[lang::message::lookup "" intranet-trans-invoices.Converter Converter]:</td>
+           <td>[im_select converter $converter_options $default_converter]</td>
+           <td width=200>&nbsp;</td>
+           </tr>
+           <tr>
+           <td colspan=3>
 	   <input type=submit value='[lang::message::lookup "" intranet-trans-invoices.Select_Project_for_cost_type "Select Projects for %target_cost_type%"]'>
+           </td>
+           </tr>
+           </table>
         </td>
       </tr>
 "
